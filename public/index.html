@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Soundboard</title>
+</head>
+<body>
+    <main>
+        <h1>Soundboard</h1>
+        <div>
+            <h2>Upload</h2>
+            <form action="/upload-audio" method="POST" enctype="multipart/form-data">
+                <label for="">File upload</label>
+                <input type="file" name="audio">
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <p>Sources</p>
+        <ul id="sourceList">
+            <li data-source="./files/audio/heli.mp3">
+                <button>Helicopter sound</button>
+            </li>
+            <li data-source="./files/audio/siren.mp3">
+                <button>Siren sound</button>
+            </li>
+        </ul>
+        <div>
+            <h2>Audio player</h2>
+            <p>Playing audio: <span id="nowPlaying"></span></p>
+            <audio controls="controls" id="audioPlayer">
+                Your browser does not support the <code>audio</code> element.
+            </audio>
+        </div>
+    </main>
+
+    <script>
+    (function() {
+        const sourceList = document.querySelector('#sourceList');
+        const audioPlayer = document.querySelector('#audioPlayer');
+
+        sourceList.addEventListener('click', (e) => {
+            console.log('event', e.target)
+            const parentNode = e.target.parentNode;
+            const soundName = e.target.innerHTML;
+            console.log('sound name', soundName);
+            const source = parentNode.getAttribute('data-source');
+            
+            audioPlayer.src = source;
+            audioPlayer.load();
+
+            const $nowPlaying = document.querySelector('#nowPlaying');
+            nowPlaying.innerHTML = soundName;
+        });
+
+        
+    })();
+    </script>
+</body>
+</html>
