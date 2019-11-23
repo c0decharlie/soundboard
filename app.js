@@ -13,17 +13,6 @@ const storage = multer.diskStorage({
         cb(null, audioFileStoragePath);
     },
 
-    fileFilter(req, file, cb) {
-        const allowedExtensions = ['mp3', 'wma'];
-        const fileExtension = mime.getExtension(file.mimetype);
-
-        if (!allowedExtensions.includes(fileExtension)) {
-            cb(new Error('File extension not allowed'), false);
-        }
-
-        cb(null, true);
-    },
-
     filename(req, file, cb) {
         crypto.pseudoRandomBytes(16, function (err, raw) {
             cb(null, raw.toString('hex') + Date.now() + '.' + mime.getExtension(file.mimetype));
@@ -31,9 +20,21 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage });
+const upload = multer({ 
+    storage,
 
-// const upload = multer({ dest: path.join(__dirname, 'files', 'audio')})
+    fileFilter(req, file, cb) {
+        const allowedExtensions = ['mp3', 'wma'];
+        const fileExtension = mime.getExtension(file.mimetype);
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            return cb(new Error('File extension not allowed'));
+        }
+
+        cb(null, true);
+    }
+});
+
 const app = express();
 const port = 3000;
 
