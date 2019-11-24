@@ -1,54 +1,17 @@
 const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const mime = require('mime');
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        const audioFileStoragePath = path.join(__dirname, 'files', 'audio');
-        cb(null, audioFileStoragePath);
-    },
-
-    filename(req, file, cb) {
-        crypto.pseudoRandomBytes(16, function (err, raw) {
-            cb(null, raw.toString('hex') + Date.now() + '.' + mime.getExtension(file.mimetype));
-        });
-    }
-});
-
-const upload = multer({ 
-    storage,
-
-    fileFilter(req, file, cb) {
-        const allowedExtensions = ['mp3', 'wma'];
-        const fileExtension = mime.getExtension(file.mimetype);
-
-        if (!allowedExtensions.includes(fileExtension)) {
-            return cb(new Error('File extension not allowed'));
-        }
-
-        cb(null, true);
-    }
-});
-
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/upload-audio', upload.single('audio'), (req, res, next) => {
-    console.log('file', req.file);
-    res.redirect('/');
-});
+const fileRoutes = require('./routes/file');
 
-app.post('/download-file', (req, res, next) => {
-
-});
+app.use('/file', fileRoutes);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
