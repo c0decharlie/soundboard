@@ -1,11 +1,8 @@
-// node
 const crypto = require('crypto');
 
-// vendor
 const mime = require('mime');
 const multer = require('multer');
 
-// custom
 const { audioFileUploadDirectory, audioFileStoragePath } = require('../configs/file');
 const { readFile } = require('../utils/file');
 
