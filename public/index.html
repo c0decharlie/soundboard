@@ -18,45 +18,73 @@
             </form>
         </div>
 
-        <!-- <p>Sources</p>
-        <ul id="sourceList">
-            <li data-source="./files/audio/heli.mp3">
-                <button>Helicopter sound</button>
-            </li>
-            <li data-source="./files/audio/siren.mp3">
-                <button>Siren sound</button>
-            </li>
-        </ul>
+        <p>Sources</p>
+        <ul id="sourceList"></ul>
         <div>
             <h2>Audio player</h2>
             <p>Playing audio: <span id="nowPlaying"></span></p>
             <audio controls="controls" id="audioPlayer">
                 Your browser does not support the <code>audio</code> element.
             </audio>
-        </div> -->
+        </div>
     </main>
 
-    <!-- <script>
+    <script>
     (function() {
-        const sourceList = document.querySelector('#sourceList');
-        const audioPlayer = document.querySelector('#audioPlayer');
+        const $audioPlayer = document.querySelector('#audioPlayer');
+        const $nowPlaying = document.querySelector('#nowPlaying');
 
-        sourceList.addEventListener('click', (e) => {
-            console.log('event', e.target)
-            const parentNode = e.target.parentNode;
-            const soundName = e.target.innerHTML;
-            console.log('sound name', soundName);
-            const source = parentNode.getAttribute('data-source');
+        function createSourceListItem(audioFile) {
+            const button = document.createElement('button');
+            button.innerHTML = audioFile.originalname;
+            button.addEventListener('click', onSourceListItemClick.bind(null, audioFile));
             
-            audioPlayer.src = source;
-            audioPlayer.load();
+            const listItem = document.createElement('li');
+            listItem.appendChild(button);
 
-            const $nowPlaying = document.querySelector('#nowPlaying');
-            nowPlaying.innerHTML = soundName;
-        });
+            return listItem;
+        }
+
+        function appendSourceListItem(item) {
+            const $sourceList = document.querySelector('#sourceList');
+            $sourceList.appendChild(item);
+        }
+
+        function onSourceListItemClick(audioFile) {
+            $audioPlayer.src = audioFile.publicPath;
+            $audioPlayer.load();
+            $nowPlaying.innerHTML = audioFile.originalname;
+        }
+
+        async function init() {
+            const audioFiles = await fetch('/file/all', { method: 'POST'})
+                .then(res => res.json());
+
+            audioFiles
+                .map(createSourceListItem)
+                .forEach(appendSourceListItem);
+        }
+
+        init();
+        
+        // 
+
+        // sourceList.addEventListener('click', (e) => {
+        //     console.log('event', e.target)
+        //     const parentNode = e.target.parentNode;
+        //     const soundName = e.target.innerHTML;
+        //     console.log('sound name', soundName);
+        //     const source = parentNode.getAttribute('data-source');
+            
+        //     audioPlayer.src = source;
+        //     audioPlayer.load();
+
+        //     const $nowPlaying = document.querySelector('#nowPlaying');
+        //     nowPlaying.innerHTML = soundName;
+        // });
 
         
     })();
-    </script> -->
+    </script>
 </body>
 </html>

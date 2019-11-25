@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 const { readFile } = require('../utils/file');
-const { audioFileStoragePath, audioFileUploadDirectory } = require('../configs/file');
+const { audioFileStoragePath, audioFilePublicDirectory} = require('../configs/file');
 
 const upload = require('../configs/upload');
 
@@ -15,6 +15,8 @@ async function saveFile(file) {
     if (isFileExisting) {
         return console.log('File already exists');
     }
+
+    file.publicPath = `${audioFilePublicDirectory}${file.filename}`;
 
     const files = [...fileContent, file];
     fs.writeFile(audioFileStoragePath, JSON.stringify(files), err => {
@@ -27,4 +29,10 @@ router.post('/upload-audio', upload.single('audio'), (req, res, next) => {
     res.redirect('/');
 });
 
+router.post('/all', async (req, res, next) => {
+    const allAudioFiles = await readFile(audioFileStoragePath);
+    res.status(200).send(JSON.stringify(allAudioFiles));
+});
+
 module.exports = router;
+ 
