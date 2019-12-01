@@ -38,11 +38,30 @@
             const button = document.createElement('button');
             button.innerHTML = audioFile.originalname;
             button.addEventListener('click', onSourceListItemClick.bind(null, audioFile));
-            
+
+            const deleteButton = createDeleteButton(audioFile.originalname);
             const listItem = document.createElement('li');
             listItem.appendChild(button);
+            listItem.appendChild(deleteButton);
 
             return listItem;
+        }
+
+        function createDeleteButton(fileName) {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'x';
+            deleteButton.addEventListener('click', sendDeleteFile.bind(null, fileName));
+            return deleteButton;
+        }
+
+        function sendDeleteFile(fileName) {
+            fetch('/file/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fileName })
+            }).then(res => res.json());
         }
 
         function appendSourceListItem(item) {
