@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 
-const { readFile } = require('../utils/file');
+const { readFile, writeFile, unlinkFile } = require('../utils/file');
 const { audioFileStoragePath, audioFilePublicDirectory, audioFileUploadDirectory } = require('../configs/file');
 
 const upload = require('../configs/upload');
@@ -13,15 +13,21 @@ async function saveFile(file) {
     const isFileExisting = fileContent.some(readFile => readFile.originalname === file.originalname);
 
     if (isFileExisting) {
-        return console.log('File already exists');
+        const error = 'File already exists';
+        console.log(error);
+        return { status: 409, error };
     }
 
     file.publicPath = `${audioFilePublicDirectory}/${file.filename}`;
 
     const files = [...fileContent, file];
-    fs.writeFile(audioFileStoragePath, JSON.stringify(files), err => {
-        console.log('Write file error: ', err);
-    });
+    
+    try {
+        await writeFile(audioFileStoragePath, files);
+    } catch(error) {
+        console.log(`File save error: ${error}`);
+        return { error };
+    }
 }
 
 async function deleteFile(fileName) {
@@ -29,35 +35,44 @@ async function deleteFile(fileName) {
     const audioFileToDelete = fileContent.filter(file => file.originalname === fileName)[0];
 
     if (!audioFileToDelete) {
-        return new Error('File does not exist.');
+        const error = 'File does not exist.';
+        console.log(error);
+        return { status: 404, error };
     }
 
-    fs.unlink(`${audioFileUploadDirectory}/${audioFileToDelete.filename}`, err => {
-        if (err) {
-            return console.log('Unlink file error: ', err);
-        }
-        
-        console.log(`File ${audioFileToDelete.originalname} successfully deleted.`);
-    });
-
+    const fileToDeletePath = `${audioFileUploadDirectory}/${audioFileToDelete.filename}`;
     const decreasedFile = fileContent.filter(file => file.originalname !== fileName);
-    fs.writeFile(audioFileStoragePath, JSON.stringify(decreasedFile), err => {
-        if (err) {
-            return console.log('Write file error: ', err);
-        }
 
-        console.log(`File was successfully written.`);
-    });
+    try {
+        await unlinkFile(fileToDeletePath);
+        await writeFile(audioFileStoragePath, decreasedFile);
+    } catch(error) {
+        console.log(`File ${audioFileToDelete} deletion error: ${error}`);
+        return { error };
+    }
 }
 
 router.post('/upload-audio', upload.single('audio'), (req, res, next) => {
-    saveFile(req.file);
+    const { error } = saveFile(req.file);
+
+    // Uncomment after frontend can handle it
+    // if (error) {
+    //     return res.status(500).json(error);
+    // }
+
     res.redirect('/');
 });
 
 router.post('/delete', (req, res, next) => {
     const fileName = req.body.fileName;
-    deleteFile(fileName);
+    const { status, error } = deleteFile(fileName);
+    
+    if (error) {
+        const errorCode = status || 500;
+        return res.status(errorCode).json({error});
+    }
+
+    return res.status(204).redirect('/');
 });
 
 router.post('/all', async (req, res, next) => {
