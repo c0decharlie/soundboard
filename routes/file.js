@@ -13,9 +13,9 @@ async function saveFile(file) {
     const isFileExisting = fileContent.some(readFile => readFile.originalname === file.originalname);
 
     if (isFileExisting) {
-        const error = 'File already exists';
-        console.log(error);
-        return { status: 409, error };
+        const error = new Error('File already exists');
+        error.statusCode = 409;
+        return ({ error });
     }
 
     file.publicPath = `${audioFilePublicDirectory}/${file.filename}`;
@@ -25,8 +25,7 @@ async function saveFile(file) {
     try {
         await writeFile(audioFileStoragePath, files);
     } catch(error) {
-        console.log(`File save error: ${error}`);
-        return { error };
+        return ({ error });
     }
 }
 
@@ -35,9 +34,9 @@ async function deleteFile(fileName) {
     const audioFileToDelete = fileContent.filter(file => file.originalname === fileName)[0];
 
     if (!audioFileToDelete) {
-        const error = 'File does not exist.';
-        console.log(error);
-        return { status: 404, error };
+        const error = new Error('File does not exist.');
+        error.statusCode = 404;
+        return ({ error });
     }
 
     const fileToDeletePath = `${audioFileUploadDirectory}/${audioFileToDelete.filename}`;
@@ -47,32 +46,29 @@ async function deleteFile(fileName) {
         await unlinkFile(fileToDeletePath);
         await writeFile(audioFileStoragePath, decreasedFile);
     } catch(error) {
-        console.log(`File ${audioFileToDelete} deletion error: ${error}`);
-        return { error };
+        return ({ error });
     }
 }
 
 router.post('/upload-audio', upload.single('audio'), (req, res, next) => {
     const { error } = saveFile(req.file);
 
-    // Uncomment after frontend can handle it
-    // if (error) {
-    //     return res.status(500).json(error);
-    // }
+    if (error) {
+        return next(error);
+    }
 
     res.redirect('/');
 });
 
-router.post('/delete', (req, res, next) => {
+router.post('/delete', async (req, res, next) => {
     const fileName = req.body.fileName;
-    const { status, error } = deleteFile(fileName);
-    
+    const { error } = await deleteFile(fileName);
+
     if (error) {
-        const errorCode = status || 500;
-        return res.status(errorCode).json({error});
+        return next(error);
     }
 
-    return res.status(204).redirect('/');
+    res.sendStatus(204);
 });
 
 router.post('/all', async (req, res, next) => {

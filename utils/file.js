@@ -6,7 +6,6 @@ exports.readFile = path => {
             if (err) {
                 return resolve([]);
             }
-    
             resolve(JSON.parse(fileContent));
         });
     });
@@ -29,8 +28,7 @@ exports.unlinkFile = path => {
             if (err) {
                 return reject(err);
             }
-
-            return resolve('File was successfully deleted.');
+            resolve('File was successfully deleted.');
         });
     });
 };
