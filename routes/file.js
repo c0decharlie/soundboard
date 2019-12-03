@@ -50,8 +50,8 @@ async function deleteFile(fileName) {
     }
 }
 
-router.post('/upload-audio', upload.single('audio'), (req, res, next) => {
-    const { error } = saveFile(req.file);
+router.post('/upload-audio', upload.single('audio'), async (req, res, next) => {
+    const { error } = await saveFile(req.file);
 
     if (error) {
         return next(error);
