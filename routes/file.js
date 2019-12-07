@@ -15,7 +15,7 @@ async function saveFile(file) {
     if (isFileExisting) {
         const error = new Error('File already exists');
         error.statusCode = 409;
-        return ({ error });
+        return error;
     }
 
     file.publicPath = `${audioFilePublicDirectory}/${file.filename}`;
@@ -25,7 +25,7 @@ async function saveFile(file) {
     try {
         await writeFile(audioFileStoragePath, files);
     } catch(error) {
-        return ({ error });
+        return error;
     }
 }
 
@@ -36,7 +36,7 @@ async function deleteFile(fileName) {
     if (!audioFileToDelete) {
         const error = new Error('File does not exist.');
         error.statusCode = 404;
-        return ({ error });
+        return error;
     }
 
     const fileToDeletePath = `${audioFileUploadDirectory}/${audioFileToDelete.filename}`;
@@ -46,14 +46,14 @@ async function deleteFile(fileName) {
         await unlinkFile(fileToDeletePath);
         await writeFile(audioFileStoragePath, decreasedFile);
     } catch(error) {
-        return ({ error });
+        return error;
     }
 }
 
 router.post('/upload-audio', upload.single('audio'), async (req, res, next) => {
-    const { error } = await saveFile(req.file);
+    const error = await saveFile(req.file);
 
-    if (error) {
+    if (error && error.message) {
         return next(error);
     }
 
@@ -62,12 +62,13 @@ router.post('/upload-audio', upload.single('audio'), async (req, res, next) => {
 
 router.post('/delete', async (req, res, next) => {
     const fileName = req.body.fileName;
-    const { error } = await deleteFile(fileName);
+    const error = await deleteFile(fileName);
 
-    if (error) {
+    if (error && error.message) {
         return next(error);
     }
 
+    // Remove redirect after ajax handling
     res.sendStatus(204);
 });
 
