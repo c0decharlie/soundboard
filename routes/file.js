@@ -49,16 +49,20 @@ async function deleteFile(fileName) {
 }
 
 router.post('/upload-audio', upload.single('audio'), async (req, res, next) => {
-    const error = await saveFile(req.file);
+    const file = req.file;
+    const error = await saveFile(file);
 
     if (error && error.message) {
         return next(error);
     }
 
-    res.redirect('/');
+    res.status(200).send({ 
+        message: `File ${file.originalname} successfully uploaded.`,
+        file
+    });
 });
 
-router.post('/delete', async (req, res, next) => {
+router.delete('/delete', async (req, res, next) => {
     const fileName = req.body.fileName;
     const error = await deleteFile(fileName);
 
@@ -70,7 +74,7 @@ router.post('/delete', async (req, res, next) => {
     res.sendStatus(204);
 });
 
-router.post('/all', async (req, res, next) => {
+router.get('/all', async (req, res, next) => {
     const allAudioFiles = await readFile(audioFileStoragePath);
     res.status(200).send(JSON.stringify(allAudioFiles));
 });
