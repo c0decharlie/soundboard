@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Navigation />
         <AudioFileUpload 
             @uploadFile="onFileUpload"
         />
@@ -25,12 +26,14 @@ import FileService from './services/file.service';
 import AudioFileUpload from './components/AudioFileUpload';
 import AudioList from './components/AudioList';
 import AudioPlayer from './components/AudioPlayer';
+import Navigation from './components/Navigation';
 
 export default {
     components: {
         AudioFileUpload,
         AudioList,
-        AudioPlayer
+        AudioPlayer,
+        Navigation
     },
 
     data() {
