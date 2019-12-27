@@ -1,7 +1,9 @@
 <template>
     <div>
+
         <Navigation />
-        <AudioFileUpload 
+
+        <!-- <AudioFileUpload 
             @uploadFile="onFileUpload"
         />
         <h2>Files:</h2>
@@ -16,7 +18,8 @@
 
         <AudioPlayer
             :audioFile="currentAudioFile"
-        />
+        /> -->
+        <router-view></router-view>
     </div>
 </template>
 
