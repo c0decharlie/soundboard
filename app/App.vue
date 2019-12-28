@@ -8,11 +8,7 @@
         />
         <h2>Files:</h2>
 
-        <AudioList 
-            :audioFiles="audioFiles"
-            @audioListElementClick="onAudioListElementClick"
-            @audioListElementDelete="onAudioListElementDelete"
-        />
+        
 
         <hr>
 
@@ -47,33 +43,5 @@ export default {
         }
     },
 
-    methods: {
-        onFileUpload(file) {
-            this.fileService.uploadAudioFile(file)
-                .then(({data}) => {
-                    this.audioFiles.push(data.file);
-                })
-                .catch(err => console.error(err));
-        },
-
-        onAudioListElementClick(audioFile) {
-            this.currentAudioFile = audioFile;
-        },
-
-        onAudioListElementDelete(fileName) {
-            this.fileService.deleteFile({ fileName })
-                .then(() => {
-                    this.audioFiles = this.audioFiles
-                        .filter(file => file.originalname !== fileName);
-                })
-                .catch(err => console.log('err', err));
-        }
-    },
-
-    created() {
-        this.fileService.fetchAllAudioFiles()
-            .then(({data}) => this.audioFiles = data)
-            .catch(err => console.log('err', err));
-    }
 }
 </script>

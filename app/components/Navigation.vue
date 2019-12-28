@@ -8,7 +8,7 @@
             <router-link to="/"> Mainboard</router-link>
           </li>
           <li>
-            <router-link to="/manage">Manage</router-link>
+            <router-link to="/management">Manage</router-link>
           </li>
         </ul>
       </div>

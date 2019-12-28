@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div :class="{ hidden: !visible }">
         <p>Playing audio: {{ audioFileName }}</p>
-        <audio controls="controls" ref="audioPlayer">
+        <audio controls="controls" ref="audioPlayer" :autoplay="autoPlay">
             Your browser does not support the <code>audio</code> element.
         </audio>
     </div>
@@ -13,6 +13,18 @@ export default {
         audioFile: {
             type: Object,
             required: false
+        },
+
+        autoPlay: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+
+        visible: {
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
 
@@ -36,3 +48,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .hidden {
+        visibility: hidden;
+    }    
+</style>

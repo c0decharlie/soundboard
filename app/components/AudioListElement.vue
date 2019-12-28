@@ -1,7 +1,12 @@
 <template>
     <div>
-        <button @click="onAudioFileButtonClick">{{ audioFile.originalname }}</button>
-        <button @click="onDeleteAudioFileClick">x</button>
+        <button 
+            @click="onAudioFileButtonClick"
+            class="waves-effect waves-light btn">
+            {{ audioFile.originalname }}
+            <i class="material-icons right">play_arrow</i>
+        </button>
+        <!-- <button @click="onDeleteAudioFileClick">x</button> -->
     </div>
 </template>
 
