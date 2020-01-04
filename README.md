@@ -12,3 +12,9 @@
 ---
 
 - [ ] check event naming convention for Vue
+
+
+## Project description 
+
+frontend 
+- Communication between components - eventbus

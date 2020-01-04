@@ -1,13 +1,20 @@
 <template>
     <div :class="{ hidden: !visible }">
         <p>Playing audio: {{ audioFileName }}</p>
-        <audio controls="controls" ref="audioPlayer" :autoplay="autoPlay">
+        <audio 
+            controls="controls" 
+            ref="audioPlayer" 
+            :autoplay="autoPlay"
+            @play="onAudioPlay"
+            @ended="onAudioEnded">
             Your browser does not support the <code>audio</code> element.
         </audio>
     </div>
 </template>
 
 <script>
+import { eventBus } from '../index.js';
+
 export default {
     props: {
         audioFile: {
@@ -30,8 +37,34 @@ export default {
 
     data() {
         return {
+            playerStates: {
+                playing: 'playing',
+                stopped: 'stopped'
+            },
             $audioPlayer: null,
-            audioFileName: ''
+            audioFileName: '',
+            currentState: null
+        }
+    },
+
+    methods: {
+        onAudioPlay() {
+            this.currentState = this.playerStates.playing;
+            eventBus.$emit('audioPlayer - play', this.audioFile);
+        },
+        onAudioEnded() {
+            this.currentState = this.playerStates.stopped;
+            eventBus.$emit('audioPlayer - ended', this.audioFile);
+        },
+
+        stopPlaying() {
+            this.$audioPlayer.pause();
+            this.$audioPlayer.currentTime = 0;
+            this.onAudioEnded();
+        },
+
+        startPlaying() {
+            this.$audioPlayer.play();
         }
     },
 
@@ -41,6 +74,10 @@ export default {
             this.$audioPlayer.load();
             this.audioFileName = file.originalname;
         }
+    },
+
+    created() {
+        this.currentState = this.playerStates.stopped;
     },
 
     mounted() {

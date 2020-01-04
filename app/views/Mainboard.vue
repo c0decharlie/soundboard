@@ -9,6 +9,7 @@
         />
 
         <AudioPlayer
+            ref="audioPlayer"
             :audioFile="currentAudioFile"
             autoPlay
         />
@@ -45,7 +46,30 @@ export default {
         },
 
         onAudioListElementClick(audioFile) {
-            this.currentAudioFile = audioFile;
+            debugger;
+            if (!this.currentAudioFile) {
+                this.currentAudioFile = audioFile;
+                return;
+            }
+
+            const isCurrentAudio = (this.currentAudioFile.filename === audioFile.filename);
+
+            if (!isCurrentAudio){
+                this.currentAudioFile = audioFile;
+                return;
+            }
+
+            const $player = this.$refs.audioPlayer;
+            const playerState = $player.currentState;
+
+            if (playerState === 'playing') {
+                $player.stopPlaying();
+                return;
+            }
+
+            if (playerState === 'stopped') {
+                $player.startPlaying();
+            }
         },
 
         onAudioListElementDelete(fileName) {
