@@ -1,7 +1,5 @@
 <template>
     <div class="container">
-        <h1>This is MainBoard view</h1>
-
         <AudioList 
             :audioFiles="audioFiles"
             @audioListElementClick="onAudioListElementClick"

@@ -1,7 +1,11 @@
 <template>
     <div>
-        <ul>
-            <li v-for="audioFile in audioFiles" :key="audioFile.filename">
+        <ul class="audio-list">
+            <li 
+                class="audio-list-element" 
+                v-for="audioFile in audioFiles" 
+                :key="audioFile.filename"
+            >
                 <AudioListElement 
                     :audioFile="audioFile" 
                     @audioListElementClick="onAudioListElementClick"
@@ -39,3 +43,15 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .audio-list {
+        display: flex;
+        flex-wrap: wrap;
+
+        .audio-list-element {
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+    }
+</style>
