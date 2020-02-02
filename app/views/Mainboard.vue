@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import FileService from '../services/file.service';
+import { mapGetters } from 'vuex';
 
 import AudioList from '../components/AudioList';
 import AudioPlayer from '../components/AudioPlayer';
@@ -37,21 +37,11 @@ export default {
 
     data() {
         return {
-            fileService: new FileService(),
-            audioFiles: [],
             currentAudioFile: null
         }
     },
 
     methods: {
-        onFileUpload(file) {
-            this.fileService.uploadAudioFile(file)
-                .then(({data}) => {
-                    this.audioFiles.push(data.file);
-                })
-                .catch(err => console.error(err));
-        },
-
         onAudioListElementClick(audioFile) {
             if (!this.currentAudioFile) {
                 this.currentAudioFile = audioFile;
@@ -88,10 +78,10 @@ export default {
         }
     },
 
-    created() {
-        this.fileService.fetchAllAudioFiles()
-            .then(({data}) => this.audioFiles = data)
-            .catch(err => console.log('err', err));
+    computed: {
+        ...mapGetters({
+            audioFiles: 'audioList'
+        })
     }
 }
 </script>
