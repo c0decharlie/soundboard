@@ -1,12 +1,20 @@
 <template>
     <div>
         <button 
+            v-if="!deletable"
             @click="onAudioFileButtonClick"
             class="waves-effect waves-light btn">
             {{ audioFile.originalname }}
             <i class="material-icons right">{{ currentButtonIcon }}</i>
         </button>
-        <!-- <button @click="onDeleteAudioFileClick">x</button> -->
+
+        <button 
+            v-else
+            @click="onDeleteAudioFileClick"
+            class="waves-effect waves-light red lighten-2 btn">
+            {{ audioFile.originalname }}
+            <i class="material-icons right">{{ buttonIcons.deleteForever }}</i>
+        </button>
     </div>
 </template>
 
@@ -18,6 +26,11 @@ export default {
         audioFile: {
             type: Object,
             required: true
+        },
+        deletable: {
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
 
@@ -25,7 +38,8 @@ export default {
         return {
             buttonIcons: {
                 play: 'play_arrow',
-                stop: 'stop'
+                stop: 'stop',
+                deleteForever: 'delete_forever'
             },
             currentButtonIcon: null
         }

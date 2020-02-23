@@ -4,7 +4,6 @@
             <AudioList 
                 :audioFiles="audioFiles"
                 @audioListElementClick="onAudioListElementClick"
-                @audioListElementDelete="onAudioListElementDelete"
             />
 
             <AudioPlayer
@@ -66,15 +65,6 @@ export default {
             if (playerState === 'stopped') {
                 $player.startPlaying();
             }
-        },
-
-        onAudioListElementDelete(fileName) {
-            this.fileService.deleteFile({ fileName })
-                .then(() => {
-                    this.audioFiles = this.audioFiles
-                        .filter(file => file.originalname !== fileName);
-                })
-                .catch(err => console.log('err', err));
         }
     },
 

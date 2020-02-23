@@ -7,6 +7,7 @@
                 :key="audioFile.filename"
             >
                 <AudioListElement 
+                    :deletable="deletable"
                     :audioFile="audioFile" 
                     @audioListElementClick="onAudioListElementClick"
                     @deleteAudioFile="onDeleteAudioFile"
@@ -29,6 +30,11 @@ export default {
             type: Array,
             default: () => [],
             required: false
+        },
+        deletable: {
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
 
