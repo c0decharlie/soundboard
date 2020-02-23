@@ -5,7 +5,7 @@
         <a href="/" class="brand-logo">Soundboard</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down" ref="nav" @click="onNavClick">
           <li>
-            <router-link to="/"> Mainboard</router-link>
+            <router-link to="/" exact> Mainboard</router-link>
           </li>
           <li>
             <router-link to="/management">Manage</router-link>
