@@ -17,6 +17,10 @@ export const store = new Vuex.Store({
     mutations: {
         SET_AUDIO_LIST(state, payload) {
             state.audioList = [...payload];
+        },
+        REMOVE_AUDIO_LIST_ELEMENT(state, fileName) {
+            state.audioFiles = this.audioFiles
+                .filter(file => file.originalname !== fileName);
         }
     }, 
     actions: {
@@ -24,6 +28,12 @@ export const store = new Vuex.Store({
             FileService.fetchAllAudioFiles()
                 .then(({ data }) => commit('SET_AUDIO_LIST', data))
                 .catch(err => console.log(err));
+        },
+
+        deleteAudioFile({commit}, fileName) {
+            FileService.deleteFile({ fileName })
+                .then(() => commit('REMOVE_AUDIO_LIST_ELEMENT', fileName))
+                .catch(err => console.log('err', err));
         }
     }
 });
