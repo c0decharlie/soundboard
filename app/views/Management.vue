@@ -1,7 +1,9 @@
 <template>
     <div class="container">
-        <h4>File upload:</h4>
-        <AudioFileUpload />
+        <h4>File upload</h4>
+        <AudioFileUpload
+            @uploadFile="onFileUpload"
+        />
         <div class="line-break"></div>
 
         <h4>Audio files</h4>
@@ -27,7 +29,11 @@ export default {
     },
     methods: {
         onAudioListElementDelete(fileName) {
-           this.$store.dispatch('deleteAudioFile', fileName);
+            this.$store.dispatch('deleteAudioFile', fileName);
+        },
+
+        onFileUpload(file) {
+            this.$store.dispatch('uploadAudioFile', file);
         }
     },
     computed: {

@@ -1,16 +1,27 @@
 <template>
     <div>
-        <form enctype="multipart/form-data">
-            <label for="">File upload</label>
-            <input 
-                @change="onInputFileChange"
-                type="file" 
-                name="audio">
+        <form action="#">
+            <div class="file-field input-field">
+            <div class="btn">
+                <span>{{ buttonText }}</span>
+                <input 
+                    @change="onInputFileChange"
+                    type="file"
+                    name="audio"
+                >
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+            </div>
+
             <button 
+                class="btn btn-submit"
                 type="submit" 
                 :disabled="!file"
-                @click.prevent="onSubmitClick">
-                Upload
+                @click.prevent="onSubmitClick"
+            >
+                Upload <i class="material-icons right">file_upload</i> 
             </button>
         </form>
     </div>
@@ -18,6 +29,14 @@
 
 <script>
 export default {
+    props: {
+        buttonText: {
+            type: String,
+            default: 'Choose file',
+            required: false
+        }
+    },
+
     data() {
         return {
             file: null
@@ -39,3 +58,10 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .btn-submit {
+        margin-left: auto;
+        display: inherit;
+    }
+</style>
