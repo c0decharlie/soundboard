@@ -20,9 +20,8 @@ export const store = new Vuex.Store({
         },
 
         REMOVE_AUDIO_LIST_ELEMENT(state, fileName) {
-            const audioFiles = state.audioFiles
+            state.audioList = state.audioList
                 .filter(file => file.originalname !== fileName);
-            state.audioFiles = audioFiles;
         },
 
         ADD_AUDIO_FILE(state, { file }) {
@@ -44,7 +43,7 @@ export const store = new Vuex.Store({
 
         uploadAudioFile({commit}, file) {
             FileService.uploadAudioFile(file)
-                .then(file => commit('ADD_AUDIO_FILE', file))
+                .then(({ data }) => commit('ADD_AUDIO_FILE', data))
                 .catch(err => console.log('uploadAudioFile error', err));
         }
     }

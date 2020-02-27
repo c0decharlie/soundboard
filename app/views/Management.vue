@@ -9,7 +9,7 @@
         <h4>Audio files</h4>
         <p>Click file to delete</p>
         <AudioList 
-            :audioFiles="audioFiles"
+            :audioFiles="audioList"
             @audioListElementDelete="onAudioListElementDelete"
             deletable
         />
@@ -37,9 +37,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            audioFiles: 'audioList'
-        })
+        ...mapGetters(['audioList'])
     }
 }
 </script>
