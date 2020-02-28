@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-
 const mime = require('mime');
 const multer = require('multer');
 
@@ -35,7 +34,9 @@ const upload = multer({
         const isFileExisting = audioFiles.some(readFile => readFile.originalname === file.originalname);
 
         if (isFileExisting) {
-            return cb(new Error('File with that name already exists'));
+            const error = new Error('File with that name already exists');
+            error.statusCode = 409;
+            return cb(error);
         }
 
         cb(null, true);
