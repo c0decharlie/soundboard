@@ -8,7 +8,12 @@
 - [ ] Create models for: errors, audio files, ...
 - [x] Create middleware for error handling
 - [x] Add vue.js on frontend
+- [x] Vuex for state management
 - [ ] Ability to upload multiple files
+- [ ] Warning alert on file deletion
+  - [ ] Save user option not to show warning on every deletion
+- [ ] Error messages on frontend
+- [ ] Loaders on frontend for audio lists
 ---
 
 - [ ] check event naming convention for Vue
