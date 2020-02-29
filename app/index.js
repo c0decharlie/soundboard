@@ -1,6 +1,5 @@
 import Vue from "vue";
 
-import 'materialize-css';
 import 'materialize-css/sass/materialize.scss';
 
 import App from "./App.vue";

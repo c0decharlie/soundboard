@@ -10,7 +10,7 @@
 - [x] Add vue.js on frontend
 - [x] Vuex for state management
 - [ ] Ability to upload multiple files
-- [ ] Warning alert on file deletion
+- [x] Warning alert on file deletion
   - [ ] Save user option not to show warning on every deletion
 - [ ] Error messages on frontend
 - [ ] Loaders on frontend for audio lists

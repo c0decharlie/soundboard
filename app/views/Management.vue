@@ -13,6 +13,17 @@
             @audioListElementDelete="onAudioListElementDelete"
             deletable
         />
+
+        <Modal
+            ref="modal"
+            declineText="Cancel"
+            @acceptClick="onModalAcceptClick"
+            @declineClick="onModalDeclineClick"
+            showDecline
+        >
+            <h4>Warning!</h4>
+            <p>Do you want to remove file permamently?</p>
+        </Modal>
     </div>
 </template>
 
@@ -21,23 +32,54 @@ import { mapGetters } from 'vuex';
 
 import AudioList from '../components/AudioList';
 import AudioFileUpload from '../components/AudioFileUpload';
+import Modal from '../components/Modal';
 
 export default {
     components: {
         AudioList,
-        AudioFileUpload
+        AudioFileUpload,
+        Modal
     },
+
+    data() {
+        return {
+            modal: null,
+            fileToDelete: null,
+        }
+    },
+
     methods: {
-        onAudioListElementDelete(fileName) {
-            this.$store.dispatch('deleteAudioFile', fileName);
+        onAudioListElementDelete(filename) {
+            // Check stored settings
+            // if ...
+            // else ...
+            this.fileToDelete = filename;
+            this.modal.open();
+        },
+
+        onModalAcceptClick() {
+            this.deleteFile(this.fileToDelete);
+        },
+
+        onModalDeclineClick() {
+            this.fileToDelete = null;
+        },
+
+        deleteFile(filename) {
+            this.$store.dispatch('deleteAudioFile', filename);
         },
 
         onFileUpload(file) {
             this.$store.dispatch('uploadAudioFile', file);
         }
     },
+
     computed: {
         ...mapGetters(['audioList'])
+    },
+
+    mounted() {
+        this.modal = this.$refs.modal;
     }
 }
 </script>
