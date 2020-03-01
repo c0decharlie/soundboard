@@ -30,7 +30,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { eventBus } from '../index.js';
+import AlertMixin from '../mixins/alert-mixin';
 
 import AudioList from '../components/AudioList';
 import AudioFileUpload from '../components/AudioFileUpload';
@@ -42,6 +42,8 @@ export default {
         AudioFileUpload,
         Modal
     },
+
+    mixins: [AlertMixin],
 
     data() {
         return {
@@ -68,32 +70,30 @@ export default {
         },
 
         deleteFile(filename) {
-            const message = {
+            const alertProps = {
                 type: 'success',
-                title: 'File deleted successfully'
+                content: 'File deleted successfully'
             };
             this.$store.dispatch('deleteAudioFile', filename)
-                .then(() => eventBus.$emit('message', message))
+                .then(() => this.showAlert(alertProps))
                 .catch(err => { 
-                    message.type = 'error';     
-                    message.title = 'File deletion failed';
-                    message.message = `Details: ${err}`;
-                    eventBus.$emit('message', message);
+                    alert.type = 'error';     
+                    alert.content = 'File deletion failed';
+                    this.showAlert(alertProps);
                 });
         },
 
         onFileUpload(file) {
-            const message = {
+            const alertProps = {
                 type: 'success',
-                title: 'File uploaded successfully'
+                content: 'File uploaded successfully'
             };
             this.$store.dispatch('uploadAudioFile', file)
-                .then(() => eventBus.$emit('message', message))
+                .then(() => this.showAlert(alertProps))
                 .catch(err => {
-                    message.type = 'error';     
-                    message.title = 'File deletion failed';
-                    message.message = `Details: ${err}`;
-                    eventBus.$emit('message', message);
+                    alertProps.type = 'error';     
+                    alertProps.content = `File deletion failed. ${err}`;
+                    this.showAlert(alertProps);
                 });
         }
     },
