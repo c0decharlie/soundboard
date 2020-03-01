@@ -36,15 +36,31 @@ export const store = new Vuex.Store({
         },
 
         deleteAudioFile({commit}, fileName) {
-            FileService.deleteFile({ fileName })
-                .then(() => commit('REMOVE_AUDIO_LIST_ELEMENT', fileName))
-                .catch(err => console.log('deleteAudioFile error', err));
+            return new Promise((resolve, reject) => {
+                FileService.deleteFile({ fileName })
+                    .then(() => {
+                        commit('REMOVE_AUDIO_LIST_ELEMENT', fileName);
+                        resolve();
+                    })
+                    .catch(err => {
+                        console.log('deleteAudioFile error', err);
+                        reject(err);
+                    });
+            });
         },
 
         uploadAudioFile({commit}, file) {
-            FileService.uploadAudioFile(file)
-                .then(({ data }) => commit('ADD_AUDIO_FILE', data))
-                .catch(err => console.log('uploadAudioFile error', err));
+            return new Promise((resolve, reject) => {
+                FileService.uploadAudioFile(file)
+                    .then(({ data }) => {
+                        commit('ADD_AUDIO_FILE', data);
+                        resolve();
+                    })
+                    .catch(err => {
+                        console.log('uploadAudioFile error', err);
+                        reject(err);
+                    });
+            });
         }
     }
 });

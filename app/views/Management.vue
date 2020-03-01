@@ -30,6 +30,8 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import { eventBus } from '../index.js';
+
 import AudioList from '../components/AudioList';
 import AudioFileUpload from '../components/AudioFileUpload';
 import Modal from '../components/Modal';
@@ -66,11 +68,33 @@ export default {
         },
 
         deleteFile(filename) {
-            this.$store.dispatch('deleteAudioFile', filename);
+            const message = {
+                type: 'success',
+                title: 'File deleted successfully'
+            };
+            this.$store.dispatch('deleteAudioFile', filename)
+                .then(() => eventBus.$emit('message', message))
+                .catch(err => { 
+                    message.type = 'error';     
+                    message.title = 'File deletion failed';
+                    message.message = `Details: ${err}`;
+                    eventBus.$emit('message', message);
+                });
         },
 
         onFileUpload(file) {
-            this.$store.dispatch('uploadAudioFile', file);
+            const message = {
+                type: 'success',
+                title: 'File uploaded successfully'
+            };
+            this.$store.dispatch('uploadAudioFile', file)
+                .then(() => eventBus.$emit('message', message))
+                .catch(err => {
+                    message.type = 'error';     
+                    message.title = 'File deletion failed';
+                    message.message = `Details: ${err}`;
+                    eventBus.$emit('message', message);
+                });
         }
     },
 

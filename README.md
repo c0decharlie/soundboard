@@ -12,8 +12,10 @@
 - [ ] Ability to upload multiple files
 - [x] Warning alert on file deletion
   - [ ] Save user option not to show warning on every deletion
-- [ ] Error messages on frontend
+- [x] Error messages on frontend
 - [ ] Loaders on frontend for audio lists
+- [ ] Separate server side of project to different folder
+- [ ] Move player logic form `AudioListElement` Component
 ---
 
 - [ ] check event naming convention for Vue
