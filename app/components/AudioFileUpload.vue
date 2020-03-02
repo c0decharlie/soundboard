@@ -7,14 +7,18 @@
                 <input 
                     @change="onInputFileChange"
                     type="file"
-                    name="audio"
+                    ref="fileInput"
                 >
             </div>
             <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
+                <input 
+                    ref="filePath"
+                    class="file-path validate" 
+                    type="text"
+                >
             </div>
             </div>
-
+            
             <button 
                 class="btn btn-submit"
                 type="submit" 
@@ -46,6 +50,12 @@ export default {
     methods: {
         onInputFileChange(e) {
             this.file = e.target.files[0];
+        },
+
+        clearValues() {
+            this.file = null;
+            this.$refs.fileInput.value = '';
+            this.$refs.filePath.value = '';
         },
         
         onSubmitClick() {

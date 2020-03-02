@@ -13,12 +13,10 @@
             />
         </template>
 
-        <template v-if="audioFiles.length === 0">
-            <div class="info-container">
-                <h3>There's no audio files to show.</h3>
-                <p>To add audio files go to management page.</p>
-            </div>
-        </template>
+        <InfoContainer v-if="audioFiles.length === 0">
+            <h3>There's no audio files to show.</h3>
+            <p>To add audio files go to management page.</p>
+        </InfoContainer>
     </div>
 </template>
 
@@ -27,11 +25,13 @@ import { mapGetters } from 'vuex';
 
 import AudioList from '../components/AudioList';
 import AudioPlayer from '../components/AudioPlayer';
+import InfoContainer from '../components/InfoContainer';
 
 export default {
     components: {
         AudioList,
-        AudioPlayer
+        AudioPlayer,
+        InfoContainer
     },
 
     data() {
@@ -79,17 +79,5 @@ export default {
 <style lang="scss" scoped>
     .container {
         height: 100%;
-    }
-
-    .info-container {
-        text-align: center;
-
-        h3 {
-            color: #404040;
-        }
-
-        p {
-            color: #676767;
-        }
     }
 </style>
