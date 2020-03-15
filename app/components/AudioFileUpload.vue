@@ -53,9 +53,12 @@ export default {
         },
 
         clearValues() {
+            const filePath = this.$refs.filePath;
+
             this.file = null;
             this.$refs.fileInput.value = '';
-            this.$refs.filePath.value = '';
+            filePath.value = '';
+            filePath.classList.remove('valid');
         },
         
         onSubmitClick() {
