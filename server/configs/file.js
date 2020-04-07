@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { projectDir } = require('../utils/path');
+const projectDir = process.cwd();
 
 exports.audioFilePublicDirectory = '/files/audio';
 exports.audioFileUploadDirectory = path.join(projectDir, 'public', 'files', 'audio');

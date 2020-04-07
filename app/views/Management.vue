@@ -106,7 +106,7 @@ export default {
                 })
                 .catch(err => {
                     alertProps.type = 'error';     
-                    alertProps.content = `File deletion failed. ${err}`;
+                    alertProps.content = `File upload failed. ${err}`;
                     this.showAlert(alertProps);
                 });
         }

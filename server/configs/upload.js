@@ -2,8 +2,10 @@ const crypto = require('crypto');
 const mime = require('mime');
 const multer = require('multer');
 
-const { audioFileUploadDirectory, audioFileStoragePath } = require('../configs/file');
+const { audioFileUploadDirectory, audioFileStoragePath } = require('./file');
 const { readFile } = require('../utils/file');
+
+console.log(audioFileUploadDirectory)
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
