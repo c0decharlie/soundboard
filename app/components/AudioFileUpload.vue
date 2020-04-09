@@ -1,12 +1,13 @@
 <template>
     <div>
-        <form action="#">
+        <form>
             <div class="file-field input-field">
             <div class="btn">
                 <span>{{ buttonText }}</span>
                 <input 
                     @change="onInputFileChange"
                     type="file"
+                    accept=".mp3, .wma"
                     ref="fileInput"
                 >
             </div>
