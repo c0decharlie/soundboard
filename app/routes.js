@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import MainboardView from './views/Mainboard.vue';
+import Mainboard from './views/Mainboard.vue';
 import Management from './views/Management.vue';
 
 Vue.use(VueRouter);
 
 const ROUTES = [
-    { path: '/', component: MainboardView },
+    { path: '/', component: Mainboard },
     { path: '/management', component: Management }
 ];
 

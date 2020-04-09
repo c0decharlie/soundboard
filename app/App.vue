@@ -12,13 +12,7 @@ export default {
     components: {
         Navigation
     },
-
-    data() {
-        return {
-            alert: null
-        }
-    },
-
+    
     mounted() {
         this.$store.dispatch('fetchAudioList');
     }
