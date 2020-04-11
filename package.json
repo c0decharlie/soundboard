@@ -6,12 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:server": "nodemon ./server/app.js",
-    "server": "node app.js",
+    "server": "node ./server/app.js",
     "dev": "webpack --watch & nodemon ./server/app.js",
     "build": "webpack",
-    "start": "npm run build & npm run server"
+    "start": "npm run build && npm run server",
+    "postinstall": "./postinstall.js"
   },
-  "author": "",
+  "author": "c0decharlie",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.7.5",
