@@ -83,7 +83,7 @@ export default {
         deleteFile(filename) {
             const alertProps = {
                 type: 'success',
-                content: 'File deleted successfully'
+                content: `File ${filename} deleted successfully`
             };
             this.$store.dispatch('deleteAudioFile', filename)
                 .then(() => this.showAlert(alertProps))
@@ -97,7 +97,7 @@ export default {
         onFileUpload(file) {
             const alertProps = {
                 type: 'success',
-                content: 'File uploaded successfully'
+                content: `File ${file.name} uploaded successfully`
             };
             this.$store.dispatch('uploadAudioFile', file)
                 .then(() => {
