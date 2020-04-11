@@ -5,8 +5,6 @@ const multer = require('multer');
 const { audioFileUploadDirectory, audioFileStoragePath } = require('./file');
 const { readFile } = require('../utils/file');
 
-console.log(audioFileUploadDirectory)
-
 const storage = multer.diskStorage({
     destination(req, file, cb) {
         cb(null, audioFileUploadDirectory);
