@@ -70,7 +70,6 @@ router.delete('/delete', async (req, res, next) => {
         return next(error);
     }
 
-    // Remove redirect after ajax handling
     res.sendStatus(204);
 });
 
