@@ -15,4 +15,4 @@ To run project in production mode:
 
 ## License
 
-[Mit License](./LICENSE);
+[Mit License](./LICENSE).
