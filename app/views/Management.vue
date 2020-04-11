@@ -65,9 +65,6 @@ export default {
 
     methods: {
         onAudioListElementDelete(filename) {
-            // Check stored settings
-            // if ...
-            // else ...
             this.fileToDelete = filename;
             this.modal.open();
         },
