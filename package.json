@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:server": "nodemon ./server/app.js",
     "server": "node ./server/app.js",
-    "dev": "concurrently --kill-others \"webpack --watch\" \"nodemon ./server/app.js\"",
+    "dev": "concurrently --kill-others \"webpack --watch --mode=development\" \"nodemon ./server/app.js\"",
     "build": "webpack",
     "start": "npm run build && npm run server",
     "postinstall": "./postinstall.js"
